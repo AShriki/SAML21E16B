@@ -258,6 +258,7 @@ void SERCOM3_IRQHandler(void){
       recieveInProgress = 0;
       bytesReceived = 0;
       userSercom->USART.DATA.reg;
+      userSercom->USART.INTFLAG.reg = 0xFF;
       enableUARTInterrupts(3);
       break;
     }

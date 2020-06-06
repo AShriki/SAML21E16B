@@ -67,9 +67,14 @@ void initClks(int exOscSel,int exOsc32k){
     GCLK->GENCTRL[1].bit.GENEN = 1;
     //GCLK->GENCTRL[1].bit.OE = 1;
     GCLK->GENCTRL[0].bit.SRC = GCLK_GENCTRL_SRC_OSC32K;
+    while(GCLK->SYNCBUSY.reg){;}
     OSCCTRL->OSC16MCTRL.bit.ENABLE = 0;
     OSCCTRL->OSC16MCTRL.bit.FSEL = 3;
     OSCCTRL->OSC16MCTRL.bit.ENABLE = 1;
+    while(!OSCCTRL->INTFLAG.bit.OSC16MRDY){;}
     GCLK->GENCTRL[0].bit.SRC = GCLK_GENCTRL_SRC_OSC16M;
+    while(GCLK->SYNCBUSY.reg){;}
     MCLK->APBAMASK.reg |= MCLK_APBAMASK_PM | MCLK_APBAMASK_GCLK | MCLK_APBAMASK_MCLK ;
+    while(!MCLK->INTFLAG.bit.CKRDY){;}
+    MCLK->INTFLAG.bit.CKRDY = 1;
 }
